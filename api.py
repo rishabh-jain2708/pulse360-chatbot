@@ -81,8 +81,12 @@ async def chat(request: ChatRequest):
 
         if "NOT_FOUND" in response_text:
             # Step 2: Fallback to Web Search
-            with DDGS() as ddgs:
-                search_results = list(ddgs.text(question, max_results=3))
+            search_results = []
+            try:
+                with DDGS() as ddgs:
+                    search_results = list(ddgs.text(question, max_results=3))
+            except Exception:
+                pass # Silently handle DuckDuckGo blocking/errors
             
             if search_results:
                 context = "\n".join([f"- {r['body']}" for r in search_results])
@@ -95,7 +99,10 @@ async def chat(request: ChatRequest):
                 final_response = llm.complete(web_prompt)
                 return ChatResponse(answer=final_response.text, source="Web Search")
             else:
-                return ChatResponse(answer="I could not find an answer in the document or on the internet.", source="Unknown")
+                # Step 3: Fallback to LLM's General Knowledge if Web Search fails
+                general_prompt = f"Please answer the following question based on your general knowledge: {question}\nAnswer:"
+                final_response = llm.complete(general_prompt)
+                return ChatResponse(answer=final_response.text, source="General Knowledge")
         else:
             return ChatResponse(answer=response_text, source="Pulse 360 Document")
             
