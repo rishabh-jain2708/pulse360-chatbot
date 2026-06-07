@@ -76,13 +76,19 @@ function App() {
 
           <div className={`app-wrapper ${messages.length === 0 ? 'initial-state' : ''}`}>
             {messages.length === 0 && (
-              <header className="header">
-                <h1>Welcome to Pulse 360 Ecosystem</h1>
-                <p>An intelligent assistant grounded in your documents, powered by advanced RAG. Ask a question to begin exploring the knowledge base.</p>
-              </header>
+              <>
+                <header className="header">
+                  <h1>Welcome to Pulse 360 Chatbot</h1>
+                  <p>An intelligent assistant grounded in your documents, powered by advanced RAG. Ask a question to begin exploring the knowledge base.</p>
+                </header>
+                
+                <div className="center-orb-container">
+                  <div className="center-orb"></div>
+                </div>
+              </>
             )}
 
-            <div className="chat-area">
+            <div className={`chat-area ${messages.length === 0 ? 'hidden' : ''}`}>
               {messages.map((msg, idx) => (
                 <div key={idx} className={`message-wrapper ${msg.role}`}>
                   <div className="message-bubble">

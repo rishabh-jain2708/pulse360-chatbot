@@ -28,7 +28,7 @@ export default function SplashScreen({ onComplete }) {
         <div className="blob blob-2"></div>
         <div className="blob blob-3"></div>
       </div>
-      <h1 className="splash-text">Welcome to Pulse 360 Ecosystem</h1>
+      <h1 className="splash-text">Welcome to Pulse 360 Chatbot</h1>
     </div>
   );
 }
