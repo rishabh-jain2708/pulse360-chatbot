@@ -119,6 +119,49 @@ body {
   100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 0 100px rgba(255, 94, 0, 0.6), inset -20px -20px 40px rgba(0,0,0,0.8), inset 20px 20px 40px rgba(255, 255, 255, 0.4); }
 }
 
+/* Voice state overrides */
+.center-orb.orb-activated {
+  background: radial-gradient(circle at 35% 35%, #fff 0%, #FFE0B2 10%, #FF6D00 40%, #5c1800 80%, #000 100%);
+  box-shadow: 0 0 140px rgba(255, 94, 0, 0.9), inset -20px -20px 40px rgba(0,0,0,0.8), inset 20px 20px 40px rgba(255, 255, 255, 0.5);
+  animation: orb-activated 0.6s ease-in-out infinite alternate;
+}
+
+.center-orb.orb-listening {
+  background: radial-gradient(circle at 35% 35%, #fff 0%, #E3F2FD 10%, #42A5F5 40%, #0D47A1 80%, #000 100%);
+  box-shadow: 0 0 120px rgba(66, 165, 245, 0.7), inset -20px -20px 40px rgba(0,0,0,0.8), inset 20px 20px 40px rgba(255, 255, 255, 0.5);
+  animation: orb-listening 0.4s ease-in-out infinite alternate;
+}
+
+.center-orb.orb-processing {
+  background: radial-gradient(circle at 35% 35%, #fff 0%, #FFF9C4 10%, #FFEE58 40%, #F57F17 80%, #000 100%);
+  box-shadow: 0 0 120px rgba(255, 238, 88, 0.7), inset -20px -20px 40px rgba(0,0,0,0.8), inset 20px 20px 40px rgba(255, 255, 255, 0.5);
+  animation: orb-processing 1s ease-in-out infinite;
+}
+
+.center-orb.orb-speaking {
+  background: radial-gradient(circle at 35% 35%, #fff 0%, #E8F5E9 10%, #66BB6A 40%, #1B5E20 80%, #000 100%);
+  box-shadow: 0 0 120px rgba(102, 187, 106, 0.7), inset -20px -20px 40px rgba(0,0,0,0.8), inset 20px 20px 40px rgba(255, 255, 255, 0.5);
+  animation: orb-speaking 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes orb-activated {
+  0% { transform: scale(1.05); }
+  100% { transform: scale(1.2); }
+}
+@keyframes orb-listening {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.15); }
+}
+@keyframes orb-processing {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes orb-speaking {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.12); }
+}
+
 .header h1 {
   font-family: 'Playfair Display', serif;
   font-size: 2.5rem;

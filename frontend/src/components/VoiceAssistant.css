@@ -1,0 +1,75 @@
+.voice-assistant {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 10px;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mic-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 94, 0, 0.4);
+  background: rgba(255, 94, 0, 0.08);
+  color: rgba(255, 94, 0, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.mic-btn:hover {
+  border-color: rgba(255, 94, 0, 0.8);
+  background: rgba(255, 94, 0, 0.15);
+  color: #FF5E00;
+  transform: scale(1.05);
+}
+
+.mic-btn.active {
+  border-color: #FF5E00;
+  background: rgba(255, 94, 0, 0.2);
+  color: #FF5E00;
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.4);
+  animation: mic-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes mic-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 94, 0, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(255, 94, 0, 0.7); }
+}
+
+.voice-status {
+  font-size: 0.78rem;
+  color: rgba(255, 200, 150, 0.5);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.voice-assistant.activated .voice-status,
+.voice-assistant.listening .voice-status {
+  color: rgba(255, 94, 0, 0.9);
+}
+
+.voice-assistant.processing .voice-status {
+  color: rgba(255, 200, 100, 0.9);
+}
+
+.voice-assistant.speaking .voice-status {
+  color: rgba(100, 220, 150, 0.9);
+}
+
+.voice-transcript {
+  font-size: 0.8rem;
+  color: rgba(255, 243, 230, 0.8);
+  font-style: italic;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

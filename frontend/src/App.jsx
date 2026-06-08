@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import SplashScreen from './components/SplashScreen'
+import VoiceAssistant from './components/VoiceAssistant'
 import './index.css'
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [orbState, setOrbState] = useState('idle') // idle | activated | listening | processing | speaking
   const messagesEndRef = useRef(null)
 
   const SUGGESTIONS = [
@@ -47,16 +49,25 @@ function App() {
         ...prev, 
         { role: 'bot', content: data.answer, source: data.source }
       ])
+      return data.answer // Return for voice assistant TTS
     } catch (error) {
       console.error(error)
+      const errMsg = 'Connection to the intelligence server failed.'
       setMessages(prev => [
         ...prev, 
-        { role: 'bot', content: 'Connection to the intelligence server failed.', source: 'System' }
+        { role: 'bot', content: errMsg, source: 'System' }
       ])
+      return errMsg
     } finally {
       setIsLoading(false)
     }
   }
+
+  // Called by VoiceAssistant — sends query and calls back with the answer text
+  const handleVoiceQuery = useCallback(async (queryText, onAnswerReady) => {
+    const answer = await sendQuery(queryText)
+    if (onAnswerReady) onAnswerReady(answer)
+  }, [])
 
   const handleSend = (e) => {
     e.preventDefault()
@@ -84,8 +95,14 @@ function App() {
                 </header>
                 
                 <div className="center-orb-container">
-                  <div className="center-orb"></div>
+                  <div className={`center-orb orb-${orbState}`}></div>
                 </div>
+
+                <VoiceAssistant
+                  onVoiceQuery={handleVoiceQuery}
+                  orbState={orbState}
+                  setOrbState={setOrbState}
+                />
               </>
             )}
 
