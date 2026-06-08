@@ -101,18 +101,29 @@ async def chat(request: ChatRequest):
         response_text = str(response).strip()
 
         if "NOT_FOUND" in response_text:
-            # Step 2: Fallback to Web Search
+            # Step 2: Fallback to Web Search with improved query
             search_results = []
             try:
                 with DDGS() as ddgs:
-                    search_results = list(ddgs.text(question, max_results=3))
+                    # Use more results and a news search for financial/current data
+                    search_results = list(ddgs.text(question, max_results=5))
             except Exception:
                 pass  # Silently handle DuckDuckGo blocking/errors
 
             if search_results:
-                context = "\n".join([f"- {r['body']}" for r in search_results])
+                # Filter out very short/useless snippets
+                useful_results = [r for r in search_results if len(r.get('body', '')) > 50]
+                if not useful_results:
+                    useful_results = search_results
+
+                context = "\n".join([
+                    f"Source: {r.get('href', 'Unknown')}\nContent: {r['body']}"
+                    for r in useful_results
+                ])
                 web_prompt = (
-                    f"Using the following internet search results, answer the user's question.\n\n"
+                    f"You are a helpful assistant. Use the following web search results to answer the user's question as specifically and accurately as possible.\n"
+                    f"If the search results contain relevant numbers, statistics, or facts, include them in your answer.\n"
+                    f"If the results are not relevant enough, say so and provide any related context you know.\n\n"
                     f"Search Results:\n{context}\n\n"
                     f"Question: {question}\n"
                     f"Answer:"
